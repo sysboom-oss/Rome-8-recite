@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로마서 8장 암송 고시</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* 레이아웃: 상단 탭 4개(오늘·연습·모의고시·기록) + 720px 단일 열. 본문 말씀은 명조, 조작부는 고딕. */
+:root{
+  --bg:#f2f5f8; --surface:#ffffff; --ink:#17212b; --muted:#5a6978; --line:#d6dee6;
+  --accent:#1d4f7c; --accent-ink:#ffffff; --accent-soft:#e3edf6;
+  --ok:#2c7a57; --ok-soft:#e1f1e9; --warn:#a86a12; --warn-soft:#f8ecd6; --bad:#b03a3a; --bad-soft:#f8e3e3;
+  --verse:"Noto Serif KR","Nanum Myeongjo",serif;
+  --ui:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f151b; --surface:#18212a; --ink:#e5ebf1; --muted:#94a2b1; --line:#2b3743;
+    --accent:#86b7e6; --accent-ink:#0f151b; --accent-soft:#1f3347;
+    --ok:#6cc39a; --ok-soft:#183328; --warn:#e0b060; --warn-soft:#3a2e17; --bad:#ec8f8f; --bad-soft:#3d2020;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f151b; --surface:#18212a; --ink:#e5ebf1; --muted:#94a2b1; --line:#2b3743;
+  --accent:#86b7e6; --accent-ink:#0f151b; --accent-soft:#1f3347;
+  --ok:#6cc39a; --ok-soft:#183328; --warn:#e0b060; --warn-soft:#3a2e17; --bad:#ec8f8f; --bad-soft:#3d2020;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:16px;line-height:1.6;word-break:keep-all}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:16px 16px 64px;display:flex;flex-direction:column;gap:16px}
+header.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header.top h1{font-family:var(--verse);font-size:22px;font-weight:600;margin:0}
+.sync{font-size:13px;color:var(--muted)}
+nav.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:500;border-bottom:3px solid transparent;margin-bottom:-1px}
+nav.tabs a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.card h2{font-size:16px;font-weight:600;margin:0}
+.card p{margin:0}
+.card h3{font-size:14px;font-weight:600;margin:0;color:var(--muted)}
+.muted{color:var(--muted)} .small{font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.3}
+.stat span{font-size:12px;color:var(--muted)}
+@media (max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}}
+.verse{font-family:var(--verse);font-size:19px;line-height:1.9;margin:0}
+.ref{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.02em}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.btn.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.btn.ghost{border-color:transparent;color:var(--accent);padding:8px 6px}
+.btn[disabled]{opacity:.5;cursor:default}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+select,input[type=number],input[type=text]{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px}
+textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;font-family:var(--verse);font-size:17px;line-height:1.8;resize:vertical}
+.map{display:grid;grid-template-columns:repeat(13,1fr);gap:5px}
+@media (max-width:480px){.map{grid-template-columns:repeat(8,1fr)}}
+.cell{aspect-ratio:1;border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;font-size:13px;font-variant-numeric:tabular-nums;position:relative;background:transparent;cursor:pointer;padding:0}
+.cell.b1{background:var(--accent-soft);border-color:var(--accent-soft)}
+.cell.b2{background:color-mix(in srgb,var(--accent) 45%,var(--surface));border-color:transparent;color:var(--accent-ink)}
+.cell.b3{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.cell.due::after{content:"";position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:var(--warn)}
+.cell.todo{border:1.5px dashed var(--warn)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--line);vertical-align:-2px;margin-right:4px}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.info{background:var(--accent-soft);color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--verse);font-size:17px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 10px;cursor:pointer}
+.chip.used{visibility:hidden}
+.chip.no{border-color:var(--bad);background:var(--bad-soft)}
+.built{min-height:64px;border:1px dashed var(--line);border-radius:8px;padding:10px 12px}
+.blankline{font-family:var(--verse);font-size:18px;line-height:2.4}
+.blankline input{font-family:var(--verse);font-size:17px;border:0;border-bottom:2px solid var(--accent);border-radius:0;background:var(--accent-soft);padding:2px 4px;text-align:center;margin:0 2px}
+.blankline input.good{border-color:var(--ok);background:var(--ok-soft)}
+.blankline input.miss{border-color:var(--bad);background:var(--bad-soft)}
+.blankline .ans{color:var(--ok);font-size:14px;font-family:var(--ui);margin-right:4px}
+.diff{font-family:var(--verse);font-size:17px;line-height:1.9;margin:0}
+.diff .m{background:var(--bad-soft);color:var(--bad);text-decoration:underline;text-decoration-thickness:2px}
+.diff .x{background:var(--warn-soft);color:var(--warn);text-decoration:line-through}
+.progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent)}
+.q{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.q:first-of-type{border-top:0;padding-top:0}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{font-size:12px;color:var(--muted);text-align:center}
+.day{border:1px solid var(--line);border-radius:6px;padding:4px 5px;min-height:46px;font-size:11px;display:flex;flex-direction:column;justify-content:space-between;color:var(--muted)}
+.day b{font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums}
+.day.out{visibility:hidden}
+.day.done{background:var(--ok-soft);border-color:var(--ok)}
+.day.missed{background:var(--warn-soft);border-color:var(--warn)}
+.day.today{outline:2px solid var(--accent);outline-offset:1px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+th{color:var(--muted);font-weight:500;font-size:12px}
+.scroll{overflow-x:auto}
+.score{font-size:40px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.notice{border-left:3px solid var(--warn);background:var(--warn-soft);padding:10px 12px;border-radius:0 8px 8px 0;font-size:14px}
+@media (prefers-reduced-motion:no-preference){.chip.no{animation:shake .25s}}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>로마서 8장 암송 고시</h1>
+    <span class="sync" id="sync">저장 위치 확인 중</span>
+  </header>
+  <nav class="tabs" id="tabs">
+    <a href="#today">오늘</a><a href="#practice">연습</a><a href="#exam">모의고시</a><a href="#record">기록</a>
+  </nav>
+  <main id="view" class="wrap" style="padding:0"></main>
+</div>
+<script>
+"use strict";
+/* ---------- 본문 (기본: 개역한글) ---------- */
+const DEFAULT_TRANSLATION = "개역한글";
+const DEFAULT_VERSES = [
+"그러므로 이제 그리스도 예수 안에 있는 자에게는 결코 정죄함이 없나니",
+"이는 그리스도 예수 안에 있는 생명의 성령의 법이 죄와 사망의 법에서 너를 해방하였음이라",
+"율법이 육신으로 말미암아 연약하여 할 수 없는 그것을 하나님은 하시나니 곧 죄를 인하여 자기 아들을 죄 있는 육신의 모양으로 보내어 육신에 죄를 정하사",
+"육신을 좇지 않고 그 영을 좇아 행하는 우리에게 율법의 요구를 이루어지게 하려 하심이니라",
+"육신을 좇는 자는 육신의 일을, 영을 좇는 자는 영의 일을 생각하나니",
+"육신의 생각은 사망이요 영의 생각은 생명과 평안이니라",
+"육신의 생각은 하나님과 원수가 되나니 이는 하나님의 법에 굴복치 아니할뿐 아니라 할 수도 없음이라",
+"육신에 있는 자들은 하나님을 기쁘시게 할 수 없느니라",
+"만일 너희 속에 하나님의 영이 거하시면 너희가 육신에 있지 아니하고 영에 있나니 누구든지 그리스도의 영이 없으면 그리스도의 사람이 아니라",
+"또 그리스도께서 너희 안에 계시면 몸은 죄로 인하여 죽은 것이나 영은 의를 인하여 산 것이니라",
+"예수를 죽은 자 가운데서 살리신 이의 영이 너희 안에 거하시면 그리스도 예수를 죽은 자 가운데서 살리신 이가 너희 안에 거하시는 그의 영으로 말미암아 너희 죽을 몸도 살리시리라",
+"그러므로 형제들아 우리가 빚진 자로되 육신에게 져서 육신대로 살 것이 아니니라",
+"너희가 육신대로 살면 반드시 죽을 것이로되 영으로써 몸의 행실을 죽이면 살리니",
+"무릇 하나님의 영으로 인도함을 받는 그들은 곧 하나님의 아들이라",
+"너희는 다시 무서워하는 종의 영을 받지 아니하였고 양자의 영을 받았으므로 아바 아버지라 부르짖느니라",
+"성령이 친히 우리 영으로 더불어 우리가 하나님의 자녀인 것을 증거하시나니",
+"자녀이면 또한 후사 곧 하나님의 후사요 그리스도와 함께한 후사니 우리가 그와 함께 영광을 받기 위하여 고난도 함께 받아야 될 것이니라",
+"생각건대 현재의 고난은 장차 우리에게 나타날 영광과 족히 비교할 수 없도다",
+"피조물의 고대하는 바는 하나님의 아들들의 나타나는 것이니",
+"피조물이 허무한데 굴복하는 것은 자기 뜻이 아니요 오직 굴복케 하시는 이로 말미암음이라",
+"그 바라는 것은 피조물도 썩어짐의 종노릇 한데서 해방되어 하나님의 자녀들의 영광의 자유에 이르는 것이니라",
+"피조물이 다 이제까지 함께 탄식하며 함께 고통하는 것을 우리가 아나니",
+"이뿐 아니라 또한 우리 곧 성령의 처음 익은 열매를 받은 우리까지도 속으로 탄식하여 양자 될것 곧 우리 몸의 구속을 기다리느니라",
+"우리가 소망으로 구원을 얻었으매 보이는 소망이 소망이 아니니 보는 것을 누가 바라리요",
+"만일 우리가 보지 못하는 것을 바라면 참음으로 기다릴찌니라",
+"이와 같이 성령도 우리 연약함을 도우시나니 우리가 마땅히 빌바를 알지 못하나 오직 성령이 말할 수 없는 탄식으로 우리를 위하여 친히 간구하시느니라",
+"마음을 감찰하시는 이가 성령의 생각을 아시나니 이는 성령이 하나님의 뜻대로 성도를 위하여 간구하심이니라",
+"우리가 알거니와 하나님을 사랑하는 자 곧 그 뜻대로 부르심을 입은 자들에게는 모든 것이 합력하여 선을 이루느니라",
+"하나님이 미리 아신 자들로 또한 그 아들의 형상을 본받게 하기 위하여 미리 정하셨으니 이는 그로 많은 형제 중에서 맏아들이 되게 하려 하심이니라",
+"또 미리 정하신 그들을 또한 부르시고 부르신 그들을 또한 의롭다 하시고 의롭다 하신 그들을 또한 영화롭게 하셨느니라",
+"그런즉 이 일에 대하여 우리가 무슨 말 하리요 만일 하나님이 우리를 위하시면 누가 우리를 대적하리요",
+"자기 아들을 아끼지 아니하시고 우리 모든 사람을 위하여 내어주신 이가 어찌 그 아들과 함께 모든 것을 우리에게 은사로 주지 아니하시겠느뇨",
+"누가 능히 하나님의 택하신 자들을 송사하리요 의롭다 하신 이는 하나님이시니",
+"누가 정죄하리요 죽으실 뿐아니라 다시 살아나신 이는 그리스도 예수시니 그는 하나님 우편에 계신 자요 우리를 위하여 간구하시는 자시니라",
+"누가 우리를 그리스도의 사랑에서 끊으리요 환난이나 곤고나 핍박이나 기근이나 적신이나 위험이나 칼이랴",
+"기록된바 우리가 종일 주를 위하여 죽임을 당케 되며 도살할 양 같이 여김을 받았나이다 함과 같으니라",
+"그러나 이 모든 일에 우리를 사랑하시는 이로 말미암아 우리가 넉넉히 이기느니라",
+"내가 확신하노니 사망이나 생명이나 천사들이나 권세자들이나 현재 일이나 장래 일이나 능력이나",
+"높음이나 깊음이나 다른 아무 피조물이라도 우리를 우리 주 그리스도 예수 안에 있는 하나님의 사랑에서 끊을 수 없으리라"
+];
+const N = 39;
+const SECTIONS = [
+  {from:1,to:4,name:"정죄함이 없음"},{from:5,to:8,name:"육신의 생각과 영의 생각"},
+  {from:9,to:11,name:"우리 안에 거하시는 영"},{from:12,to:17,name:"하나님의 자녀"},
+  {from:18,to:25,name:"고난과 소망"},{from:26,to:30,name:"성령의 간구와 부르심"},
+  {from:31,to:39,name:"끊을 수 없는 사랑"}
+];
+const REVIEW_BLOCKS = [[1,11],[12,25],[26,39],[1,8],[9,17],[18,25],[26,30],[31,39]];
+const INTERVAL = [0,1,2,4,7,14];
+const PASS = 0.95, EXAM_PASS = 90;
+
+/* ---------- 날짜 ---------- */
+const pad = n => String(n).padStart(2,"0");
+const fmt = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const parse = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y,m-1,d); };
+const addDays = (s,n) => { const d = parse(s); d.setDate(d.getDate()+n); return fmt(d); };
+const diffDays = (a,b) => Math.round((parse(b)-parse(a))/86400000);
+const today = () => fmt(new Date());
+const DOW = ["일","월","화","수","목","금","토"];
+const short = s => { const d = parse(s); return (d.getMonth()+1)+"/"+d.getDate()+"("+DOW[d.getDay()]+")"; };
+
+/* ---------- 상태 ---------- */
+const LS_KEY = "romans8-recite-v1";
+function blank(){ return {v:1,updatedAt:0,start:"2026-11-26",end:"2027-01-31",translation:DEFAULT_TRANSLATION,verses:null,cards:{},log:{},exams:[]}; }
+function migrate(s){ const b = blank(); if(!s||typeof s!=="object") return b;
+  for(const k of Object.keys(b)) if(s[k]!==undefined && (s[k]!==null || k==="verses")) b[k] = s[k];
+  if(!Array.isArray(b.verses)||b.verses.length!==N) b.verses = null;
+  if(!Array.isArray(b.exams)) b.exams = [];
+  if(typeof b.cards!=="object"||!b.cards) b.cards = {};
+  if(typeof b.log!=="object"||!b.log) b.log = {};
+  return b; }
+let S = blank();
+try{ const raw = localStorage.getItem(LS_KEY); if(raw) S = migrate(JSON.parse(raw)); }catch(e){}
+let cloudRef = null, writing = false, dirty = false, saveTimer = null;
+function setSync(t){ document.getElementById("sync").textContent = t; }
+function save(){ S.updatedAt = Date.now();
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){}
+  if(cloudRef){ clearTimeout(saveTimer); saveTimer = setTimeout(pushCloud, 1200); } }
+async function pushCloud(){ if(!cloudRef) return; if(writing){ dirty = true; return; }
+  writing = true; setSync("저장 중");
+  try{ await cloudRef.set({v:1,updatedAt:S.updatedAt,state:JSON.parse(JSON.stringify(S))}); setSync("내 계정에 저장됨"); }
+  catch(e){ setSync("계정 저장 실패, 이 기기에는 저장됨"); }
+  writing = false; if(dirty){ dirty = false; pushCloud(); } }
+async function initCloud(){
+  try{
+    if(!(window.claude && claude.use)) return setSync("이 기기에만 저장");
+    const [db,user] = await Promise.all([claude.use("db"),claude.use("user")]);
+    if(!db||!user) return setSync("이 기기에만 저장");
+    const uid = await user.id(); if(!uid) return setSync("이 기기에만 저장");
+    const ref = db.doc("data/users/"+uid+"/romans8");
+    const snap = await Promise.race([ref.get(), new Promise((_,r)=>setTimeout(()=>r(new Error("timeout")),10000))]);
+    cloudRef = ref;
+    if(snap.exists){ const d = snap.data()||{};
+      if(d.state && (d.updatedAt||0) > (S.updatedAt||0)){ S = migrate(JSON.parse(JSON.stringify(d.state))); S.updatedAt = d.updatedAt;
+        try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){}
+        if(!session && !exam) render(); }
+      else if((S.updatedAt||0) > (d.updatedAt||0)) pushCloud();
+    } else if(S.updatedAt) pushCloud();
+    setSync("내 계정에 저장됨");
+  }catch(e){ setSync("이 기기에만 저장"); }
+}
+
+/* ---------- 계획 ---------- */
+const V = n => (S.verses||DEFAULT_VERSES)[n-1];
+function buildPlan(){ const out = []; let next = 1, blk = 0;
+  for(let d = S.start; d <= S.end; d = addDays(d,1)){ const w = parse(d).getDay();
+    if(d===S.end && next>N){ out.push({date:d,type:"final",from:1,to:N}); continue; }
+    if(w===0) out.push({date:d,type:"rest",from:1,to:Math.max(1,next-1)});
+    else if(w===6) out.push({date:d,type:next>N?"mock":"weekly",from:1,to:Math.max(1,next-1)});
+    else if(next<=N){ out.push({date:d,type:"new",verse:next}); next++; }
+    else { const b = REVIEW_BLOCKS[blk++ % REVIEW_BLOCKS.length]; out.push({date:d,type:"review",from:b[0],to:b[1]}); }
+  } return out; }
+function planLabel(p){ return p.type==="new" ? p.verse+"절" : p.type==="weekly" ? "주간점검" : p.type==="rest" ? "낭독" : p.type==="review" ? p.from+"-"+p.to : p.type==="mock" ? "모의고시" : "완주"; }
+function plannedCount(t){ let c = 0; for(const p of buildPlan()) if(p.type==="new" && p.date<=t) c++; return c; }
+
+/* ---------- 카드(구절별 숙련도) ---------- */
+const card = n => S.cards[n] || {b:0,d:null,ok:0,miss:0};
+const learned = () => { let c = 0; for(let i=1;i<=N;i++) if(card(i).b>=1) c++; return c; };
+const solid = () => { let c = 0; for(let i=1;i<=N;i++) if(card(i).b>=4) c++; return c; };
+const dueList = () => { const t = today(), a = []; for(let i=1;i<=N;i++){ const c = card(i); if(c.b>=1 && c.d && c.d<=t) a.push(i); } return a; };
+const todoNew = () => { const p = plannedCount(today()), a = []; for(let i=1;i<=Math.min(N,p);i++) if(card(i).b===0) a.push(i); return a; };
+function grade(n, pass){ const t = today(), c = Object.assign({}, card(n));
+  if(pass){ c.ok++; if(c.b===0 || !c.d || c.d<=t){ c.b = Math.min(5, c.b+1); c.d = addDays(t, INTERVAL[c.b]); } }
+  else { c.miss++; if(c.b>=1){ c.b = 1; c.d = addDays(t,1); } }
+  S.cards[n] = c;
+  const l = S.log[t] || {n:0,ok:0}; l.n++; if(pass) l.ok++; S.log[t] = l; save(); }
+function streak(){ let d = today(), c = 0; if(!S.log[d]) d = addDays(d,-1); while(S.log[d] && S.log[d].n>0){ c++; d = addDays(d,-1); } return c; }
+
+/* ---------- 채점 ---------- */
+const norm = s => s.replace(/[\s.,;:!?'"“”‘’·、。()\[\]\-~]/g,"");
+function lcsMarks(a,b){ const n=a.length, m=b.length, W=m+1, T=new Uint16Array((n+1)*W);
+  for(let i=1;i<=n;i++) for(let j=1;j<=m;j++) T[i*W+j] = a[i-1]===b[j-1] ? T[(i-1)*W+j-1]+1 : Math.max(T[(i-1)*W+j], T[i*W+j-1]);
+  const ma=new Uint8Array(n), mb=new Uint8Array(m); let i=n, j=m;
+  while(i>0&&j>0){ if(a[i-1]===b[j-1]){ ma[i-1]=1; mb[j-1]=1; i--; j--; } else if(T[(i-1)*W+j]>=T[i*W+j-1]) i--; else j--; }
+  return {len:T[n*W+m], ma, mb}; }
+function compare(target, input){ const ta=[...target], ia=[...input], tk=[], ik=[];
+  ta.forEach((ch,x)=>{ if(norm(ch)) tk.push(x); }); ia.forEach((ch,x)=>{ if(norm(ch)) ik.push(x); });
+  const r = lcsMarks(tk.map(x=>ta[x]), ik.map(x=>ia[x]));
+  const acc = tk.length ? r.len/Math.max(tk.length, ik.length) : 0;
+  const tm = new Uint8Array(ta.length).fill(1), im = new Uint8Array(ia.length).fill(1);
+  tk.forEach((x,k)=>{ tm[x] = r.ma[k]; }); ik.forEach((x,k)=>{ im[x] = r.mb[k]; });
+  return {acc, ta, ia, tm, im}; }
+function diffNode(chars, marks, cls){ const p = el("p",{class:"diff"}); let buf = "", cur = 1;
+  const flush = () => { if(!buf) return; p.append(cur ? document.createTextNode(buf) : el("span",{class:cls},buf)); buf = ""; };
+  chars.forEach((ch,x)=>{ const k = (marks[x] || !norm(ch)) ? 1 : 0; if(k!==cur){ flush(); cur = k; } buf += ch; }); flush(); return p; }
+function resultBlock(target, input){ const r = compare(target, input), box = el("div",{style:"display:flex;flex-direction:column;gap:6px"});
+  box.append(el("h3",{},"본문 (빠뜨리거나 틀린 글자 표시)"), diffNode(r.ta, r.tm, "m"));
+  if(input.trim()) box.append(el("h3",{},"내가 쓴 것 (본문에 없는 글자 표시)"), diffNode(r.ia, r.im, "x"));
+  return {node:box, acc:r.acc}; }
+const CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+const chosung = s => [...s].map(ch=>{ const c = ch.charCodeAt(0)-0xAC00; return c>=0&&c<11172 ? CHO[Math.floor(c/588)] : ch; }).join("");
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+const range = (a,b) => { const r = []; for(let i=a;i<=b;i++) r.push(i); return r; };
+
+/* ---------- DOM 도우미 ---------- */
+function el(tag, attrs, ...kids){ const e = document.createElement(tag);
+  for(const k in (attrs||{})){ const v = attrs[k]; if(v===false||v==null) continue;
+    if(k==="class") e.className = v; else if(k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v===true?"":v); }
+  for(const c of kids.flat()){ if(c==null||c===false) continue; e.append(c.nodeType ? c : document.createTextNode(String(c))); }
+  return e; }
+const btn = (label, onclick, cls, extra) => el("button", Object.assign({type:"button",class:"btn "+(cls||""),onclick}, extra||{}), label);
+function seg(options, value, onpick){ return el("div",{class:"seg",role:"group"}, options.map(o => el("button",{type:"button","aria-pressed":String(o[0]===value),onclick:()=>onpick(o[0])}, o[1]))); }
+
+/* ---------- 음성 (있을 때만) ---------- */
+let tts = null, dict = null, dictTarget = null, dictState = "idle";
+async function initVoice(){ try{ if(!(window.claude && claude.use)) return;
+    tts = await claude.use("tts"); dict = await claude.use("dictation");
+    if(dict){ dict.onFinal(({text})=>{ if(dictTarget){ dictTarget.value = (dictTarget.value ? dictTarget.value+text : text.replace(/^\s+/,"")); } });
+      dict.onState(({state})=>{ dictState = state; const b = document.getElementById("micbtn"); if(b) b.textContent = state==="idle" ? "말로 암송하기" : "듣는 중 (눌러서 멈춤)"; }); }
+    if((tts||dict) && !session && !exam) render();
+  }catch(e){} }
+function speakBtn(text){ if(!tts) return null; return btn("듣기", ()=>{ tts.speak(text,{language:"ko",rate:0.9}).catch(()=>{}); }, "ghost"); }
+function micBtn(textarea, msg){ if(!dict) return null;
+  return btn("말로 암송하기", ()=>{ if(dictState!=="idle"){ dict.stop().catch(()=>{}); return; }
+    dictTarget = textarea; dict.start({language:"ko"}).catch(e=>{ const c = e&&e.code;
+      msg.textContent = c==="not_granted" ? "마이크 사용이 허용되지 않았습니다. 타이핑으로 진행하세요." : c==="dismissed"||c==="stopped" ? "" : "지금은 음성 인식을 쓸 수 없습니다. 타이핑으로 진행하세요."; }); }, "", {id:"micbtn"}); }
+
+/* ---------- 화면: 오늘 ---------- */
+let session = null, exam = null, examResult = null;
+let practiceCfg = {scope:"new", mode:"hide", ratio:50, from:1, to:4, sec:0, random:false};
+let examCfg = {scope:"learned", type:"write", count:10, from:1, to:N, sec:0};
+function versesOf(scope, cfg){
+  if(scope==="new") return todoNew(); if(scope==="due") return dueList();
+  if(scope==="learned") return range(1,N).filter(i=>card(i).b>=1);
+  if(scope==="sec"){ const s = SECTIONS[cfg.sec]; return range(s.from,s.to); }
+  if(scope==="custom"){ const a = Math.max(1,Math.min(N,cfg.from|0)), b = Math.max(a,Math.min(N,cfg.to|0)); return range(a,b); }
+  return range(1,N); }
+function go(hash){ if(location.hash===hash) render(); else location.hash = hash; }
+function startPractice(scope, mode, extra){ Object.assign(practiceCfg, {scope, mode}, extra||{}); beginSession(); go("#practice"); }
+
+function viewToday(){ const t = today(), plan = buildPlan(), p = plan.find(x=>x.date===t), out = [];
+  const dleft = diffDays(t, S.end), ln = learned(), tn = todoNew(), du = dueList();
+  out.push(el("div",{class:"stats"},
+    el("div",{class:"stat"}, el("b",{}, dleft>=0 ? "D-"+dleft : "D+"+(-dleft)), el("span",{},"목표일 "+short(S.end))),
+    el("div",{class:"stat"}, el("b",{}, ln+" / "+N), el("span",{},"익힌 구절")),
+    el("div",{class:"stat"}, el("b",{}, solid()), el("span",{},"굳어진 구절 (1주 이상 유지)")),
+    el("div",{class:"stat"}, el("b",{}, streak()+"일"), el("span",{},"연속 점검"))));
+  const c = el("section",{class:"card"}); out.push(c);
+  c.append(el("h2",{}, "오늘 할 일 · "+short(t)));
+  if(!p) c.append(el("p",{class:"muted"}, t<S.start ? "계획은 "+short(S.start)+"에 시작합니다. 미리 연습해도 기록됩니다." : "계획 기간이 끝났습니다. 복습 대상과 모의고시로 유지하세요."));
+  else if(p.type==="new"){
+    c.append(el("div",{}, el("span",{class:"ref"},"새 구절 · 로마서 8:"+p.verse), el("p",{class:"verse"}, V(p.verse))));
+    c.append(el("div",{class:"row"}, speakBtn(V(p.verse)),
+      card(p.verse).b>=1 ? el("span",{class:"pill ok"},"오늘 구절 통과") : el("span",{class:"pill info"},"순서 맞추기 → 빈칸 → 타이핑 순서를 권합니다")));
+  } else if(p.type==="weekly") c.append(el("p",{}, "주간 점검일입니다. 지금까지 배운 1–"+p.to+"절을 모의고시로 확인하세요."), el("div",{class:"row"}, btn("1–"+p.to+"절 모의고시 보기", ()=>{ Object.assign(examCfg,{scope:"custom",from:1,to:p.to,type:"write",count:10}); go("#exam"); }, "primary")));
+  else if(p.type==="rest") c.append(el("p",{}, "새 구절이 없는 날입니다. 1–"+p.to+"절을 소리 내어 한 번 읽고, 복습 대상만 점검하세요."));
+  else if(p.type==="review") c.append(el("p",{}, "전체 다지기 기간입니다. 오늘은 "+p.from+"–"+p.to+"절을 통째로 써 보세요."), el("div",{class:"row"}, btn(p.from+"–"+p.to+"절 통째 쓰기", ()=>{ Object.assign(examCfg,{scope:"custom",from:p.from,to:p.to,type:"whole"}); go("#exam"); }, "primary")));
+  else c.append(el("p",{}, p.type==="final" ? "완주일입니다. 8장 전체를 통째로 써서 마무리하세요." : "전 범위 모의고시 날입니다."), el("div",{class:"row"}, btn("8장 전체 통째 쓰기", ()=>{ Object.assign(examCfg,{scope:"all",type:"whole"}); go("#exam"); }, "primary")));
+  if(tn.length){ c.append(el("div",{class:"row"},
+      el("span",{class:"pill warn"}, "아직 익히지 않은 구절 "+tn.length+"개 ("+tn[0]+(tn.length>1?"–"+tn[tn.length-1]:"")+"절)"),
+      btn("순서 맞추기로 시작", ()=>startPractice("new","order"), "primary"), btn("빈칸 채우기", ()=>startPractice("new","blank")), btn("타이핑", ()=>startPractice("new","type")))); }
+  c.append(el("div",{class:"row"}, du.length ? el("span",{class:"pill warn"}, "복습 대상 "+du.length+"개") : el("span",{class:"pill ok"}, "복습 대상 없음"),
+    du.length ? btn("복습 시작 (가리고 외우기)", ()=>startPractice("due","hide"), tn.length?"":"primary") : null,
+    du.length ? btn("타이핑으로 복습", ()=>startPractice("due","type")) : null));
+  out.push(mapCard());
+  const wk = el("section",{class:"card"}, el("h2",{},"앞으로 7일")); const tb = el("table",{}, el("tr",{}, el("th",{},"날짜"), el("th",{},"할 일")));
+  plan.filter(x=>x.date>=t).slice(0,7).forEach(x=>tb.append(el("tr",{}, el("td",{}, short(x.date)), el("td",{}, x.type==="new" ? "새 구절 8:"+x.verse : x.type==="weekly" ? "주간 점검 (1–"+x.to+"절)" : x.type==="rest" ? "전체 낭독, 복습만" : x.type==="review" ? x.from+"–"+x.to+"절 통째 쓰기" : x.type==="mock" ? "전 범위 모의고시" : "8장 전체 암송 완주"))));
+  wk.append(el("div",{class:"scroll"}, tb)); out.push(wk); return out; }
+
+function mapCard(){ const t = today(), todo = new Set(todoNew()), c = el("section",{class:"card"}, el("h2",{},"구절 지도"));
+  const g = el("div",{class:"map"});
+  for(let i=1;i<=N;i++){ const k = card(i); const cls = "cell"+(k.b>=5?" b3":k.b>=3?" b2":k.b>=1?" b1":"")+(k.b>=1&&k.d&&k.d<=t?" due":"")+(todo.has(i)?" todo":"");
+    g.append(el("button",{type:"button",class:cls,title:"8:"+i+" · 단계 "+k.b+"/5"+(k.d?" · 다음 복습 "+short(k.d):""),"aria-label":"8장 "+i+"절 연습",onclick:()=>startPractice("custom","hide",{from:i,to:i})}, i)); }
+  c.append(g, el("div",{class:"legend"},
+    el("span",{}, el("i",{}),"시작 전"), el("span",{}, el("i",{style:"background:var(--accent-soft)"}),"익히는 중"),
+    el("span",{}, el("i",{style:"background:color-mix(in srgb,var(--accent) 45%,var(--surface))"}),"다지는 중"), el("span",{}, el("i",{style:"background:var(--accent)"}),"완성"),
+    el("span",{},"주황 점: 오늘 복습"), el("span",{},"점선: 일정상 밀린 구절")));
+  c.append(el("p",{class:"small muted"},"통과하면 다음 복습이 1일 → 2일 → 4일 → 7일 → 14일 뒤로 늘어납니다. 틀리면 내일 다시 나옵니다. 칸을 누르면 그 절을 바로 연습합니다."));
+  return c; }
+
+/* ---------- 화면: 연습 ---------- */
+function scopeControls(cfg, opts, rerender){ const sel = el("select",{id:"scope-"+opts.id,onchange:e=>{ cfg.scope = e.target.value; rerender(); }},
+    opts.scopes.map(o=>el("option",{value:o[0],selected:o[0]===cfg.scope}, o[1])));
+  const row = el("div",{class:"row"}, el("label",{class:"f"},"범위", sel));
+  if(cfg.scope==="sec") row.append(el("label",{class:"f"},"단락", el("select",{id:"sec-"+opts.id,onchange:e=>{ cfg.sec = +e.target.value; rerender(); }}, SECTIONS.map((s,x)=>el("option",{value:x,selected:x===cfg.sec}, s.from+"–"+s.to+"절 "+s.name)))));
+  if(cfg.scope==="custom") row.append(
+    el("label",{class:"f"},"시작 절", el("input",{type:"number",id:"from-"+opts.id,min:1,max:N,value:cfg.from,style:"width:80px",onchange:e=>{ cfg.from = +e.target.value; rerender(); }})),
+    el("label",{class:"f"},"끝 절", el("input",{type:"number",id:"to-"+opts.id,min:1,max:N,value:cfg.to,style:"width:80px",onchange:e=>{ cfg.to = +e.target.value; rerender(); }})));
+  return row; }
+function beginSession(){ let q = versesOf(practiceCfg.scope, practiceCfg); if(practiceCfg.random) q = shuffle(q);
+  session = q.length ? {queue:q, i:0, pass:0, fail:0, step:null} : null; }
+function viewPractice(){ if(session) return [sessionCard()];
+  const c = el("section",{class:"card"}, el("h2",{},"연습 설정")), rr = ()=>render();
+  c.append(scopeControls(practiceCfg, {id:"p",scopes:[["new","일정상 새로 익힐 구절"],["due","오늘 복습 대상"],["learned","익힌 구절 전체"],["sec","단락별"],["custom","절 범위 직접 지정"],["all","8장 전체"]]}, rr));
+  c.append(el("h3",{},"점검 방법"), seg([["hide","가리고 외우기"],["order","순서 맞추기"],["blank","빈칸 채우기"],["type",dict?"타이핑·말하기":"타이핑"]], practiceCfg.mode, v=>{ practiceCfg.mode = v; rr(); }));
+  const help = {hide:"장절만 보고 속으로 또는 소리 내어 외운 뒤, 본문을 열어 스스로 체크합니다. 가장 빠른 복습법입니다.",
+    order:"섞인 어절을 순서대로 누릅니다. 처음 익히는 구절에 맞습니다.", blank:"일부 어절을 가리고 직접 채웁니다. 가리는 비율을 높여 가세요.",
+    type:"본문 전체를 써서 글자 단위로 채점합니다. 띄어쓰기와 문장부호는 채점하지 않습니다. 95% 이상이면 통과입니다."};
+  c.append(el("p",{class:"small muted"}, help[practiceCfg.mode]));
+  if(practiceCfg.mode==="blank") c.append(el("h3",{},"가리는 비율"), seg([[30,"30%"],[50,"50%"],[80,"80%"]], practiceCfg.ratio, v=>{ practiceCfg.ratio = v; rr(); }));
+  c.append(el("label",{class:"row small"}, el("input",{type:"checkbox",id:"rnd",checked:practiceCfg.random,onchange:e=>{ practiceCfg.random = e.target.checked; }}), "구절 순서 섞기"));
+  const q = versesOf(practiceCfg.scope, practiceCfg);
+  c.append(el("div",{class:"row"}, btn(q.length ? q.length+"개 구절 연습 시작" : "이 범위에 해당하는 구절이 없습니다", ()=>{ beginSession(); render(); }, "primary", {disabled:!q.length})));
+  return [c, mapCard()]; }
+
+function sessionCard(){ const s = session, c = el("section",{class:"card"});
+  if(s.i>=s.queue.length){ c.append(el("h2",{},"연습 끝"), el("p",{}, s.queue.length+"개 구절 중 통과 "+s.pass+"개, 다시 볼 구절 "+s.fail+"개."),
+      el("div",{class:"row"}, btn("오늘 화면으로", ()=>{ session = null; go("#today"); }, "primary"), btn("다른 연습 고르기", ()=>{ session = null; render(); })));
+    return c; }
+  const n = s.queue[s.i], text = V(n), words = text.split(/\s+/);
+  c.append(el("div",{class:"row",style:"justify-content:space-between"}, el("span",{class:"ref"},"로마서 8:"+n), el("span",{class:"small muted"}, (s.i+1)+" / "+s.queue.length), btn("그만하기", ()=>{ session = null; render(); }, "ghost")),
+    el("div",{class:"progress"}, el("i",{style:"width:"+(s.i/s.queue.length*100)+"%"})));
+  const next = pass => { grade(n, pass); pass ? s.pass++ : s.fail++; s.i++; s.step = null; render(); };
+  const mode = practiceCfg.mode, body = el("div",{style:"display:flex;flex-direction:column;gap:12px"}); c.append(body);
+  if(mode==="hide"){ const st = s.step || (s.step = {hint:0, shown:false});
+    if(n>1) body.append(el("p",{class:"small muted"}, "앞 절 끝: … "+V(n-1).split(/\s+/).slice(-3).join(" ")));
+    if(!st.shown){ if(st.hint===1) body.append(el("p",{class:"verse"}, words[0]+" …")); if(st.hint===2) body.append(el("p",{class:"verse"}, chosung(text)));
+      body.append(el("p",{class:"muted"},"본문을 가린 상태입니다. 끝까지 외워 본 뒤 확인하세요."),
+        el("div",{class:"row"}, btn("본문 확인", ()=>{ st.shown = true; render(); }, "primary"), st.hint<1 ? btn("첫 어절 힌트", ()=>{ st.hint = 1; render(); }) : null, st.hint<2 ? btn("초성 힌트", ()=>{ st.hint = 2; render(); }) : null)); }
+    else body.append(el("p",{class:"verse"}, text), el("div",{class:"row"}, btn("막힘 없이 외웠다", ()=>next(true), "ok"), btn("막히거나 틀렸다", ()=>next(false), "bad"), speakBtn(text)),
+      st.hint ? el("p",{class:"small muted"},"힌트를 본 구절은 한 번 더 점검하는 편이 안전합니다.") : null);
+  } else if(mode==="order"){ const st = s.step || (s.step = {pool:shuffle(words.map((w,x)=>({w,x}))), pos:0, miss:0, used:{}});
+    const built = el("p",{class:"verse built"}, words.slice(0,st.pos).join(" "));
+    const chips = el("div",{class:"chips"}, st.pool.map(o=>el("button",{type:"button",class:"chip"+(st.used[o.x]?" used":""),onclick:e=>{
+      if(o.w===words[st.pos]){ st.used[o.x] = 1; st.pos++; render(); } else { st.miss++; e.currentTarget.classList.remove("no"); void e.currentTarget.offsetWidth; e.currentTarget.classList.add("no"); document.getElementById("misscount").textContent = "틀린 횟수 "+st.miss; } }}, o.w)));
+    body.append(built, st.pos<words.length ? chips : null, el("p",{class:"small muted",id:"misscount"}, "틀린 횟수 "+st.miss));
+    if(st.pos>=words.length) body.append(el("div",{class:"row"}, st.miss<=1 ? el("span",{class:"pill ok"},"통과") : el("span",{class:"pill bad"},"틀린 횟수가 많아 내일 다시 나옵니다"), btn("다음", ()=>next(st.miss<=1), "primary")));
+  } else if(mode==="blank"){ const st = s.step || (s.step = {hide:new Set(shuffle(range(0,words.length-1)).slice(0, Math.max(1, Math.round(words.length*practiceCfg.ratio/100)))), done:false, vals:{}, okAll:false});
+    const line = el("p",{class:"blankline"});
+    words.forEach((w,x)=>{ if(!st.hide.has(x)){ line.append(w+" "); return; }
+      const good = norm(st.vals[x]||"")===norm(w);
+      line.append(el("input",{type:"text",id:"blank-"+x,"aria-label":(x+1)+"번째 어절",size:Math.max(2,w.length*2),value:st.vals[x]||"",class:st.done?(good?"good":"miss"):"",readonly:st.done,autocomplete:"off",
+        oninput:e=>{ st.vals[x] = e.target.value; }, onkeydown:e=>{ if(e.key==="Enter"){ e.preventDefault(); document.getElementById("checkbtn").click(); } }}));
+      if(st.done && !good) line.append(el("span",{class:"ans"}, w)); line.append(" "); });
+    body.append(line);
+    if(!st.done) body.append(el("div",{class:"row"}, btn("채점", ()=>{ st.done = true; st.okAll = [...st.hide].every(x=>norm(st.vals[x]||"")===norm(words[x])); render(); }, "primary", {id:"checkbtn"})));
+    else body.append(el("div",{class:"row"}, st.okAll ? el("span",{class:"pill ok"},"모두 맞음") : el("span",{class:"pill bad"},"틀린 칸이 있습니다"), btn("다음", ()=>next(st.okAll), "primary")));
+  } else { const st = s.step || (s.step = {done:false, input:""});
+    if(!st.done){ const ta = el("textarea",{id:"typebox",rows:4,placeholder:"8장 "+n+"절을 써 보세요",oninput:e=>{ st.input = e.target.value; }}); ta.value = st.input;
+      const msg = el("span",{class:"small muted"});
+      body.append(ta, el("div",{class:"row"}, btn("채점", ()=>{ st.input = ta.value; if(dict && dictState!=="idle") dict.stop().catch(()=>{}); st.done = true; render(); }, "primary"), micBtn(ta, msg), msg),
+        dict ? el("p",{class:"small muted"},"음성 인식은 옛 말투(-나니, -느니라)를 다르게 받아 적는 일이 있습니다. 채점 전에 눈으로 한 번 확인하세요.") : null);
+    } else { const r = resultBlock(text, st.input), pct = Math.round(r.acc*100), ok = r.acc>=PASS;
+      body.append(el("div",{class:"row"}, el("span",{class:"pill "+(ok?"ok":"bad")}, "정확도 "+pct+"%"+(ok?" · 통과":" · 내일 다시")), speakBtn(text)), r.node,
+        el("div",{class:"row"}, btn("다음", ()=>next(ok), "primary"), btn("이 절 다시 쓰기", ()=>{ s.step = null; render(); }))); }
+  }
+  return c; }
+
+/* ---------- 화면: 모의고시 ---------- */
+const EXAM_TYPES = [["write","절 쓰기 (장절 보고 쓰기)"],["chain","이어 쓰기 (앞 절 보고 다음 절)"],["blank","빈칸 채우기 (50%)"],["whole","통째 쓰기 (범위 전체)"]];
+const typeName = t => (EXAM_TYPES.find(x=>x[0]===t)||["",t])[1].split(" (")[0];
+function startExam(){ const pool = versesOf(examCfg.scope, examCfg); if(!pool.length) return;
+  let qs; if(examCfg.type==="whole") qs = [{whole:true, verses:pool}];
+  else { const cnt = examCfg.count==="all" ? pool.length : Math.min(pool.length, examCfg.count); qs = shuffle(pool).slice(0,cnt).sort((a,b)=>a-b).map(n=>({n})); }
+  qs.forEach(q=>{ q.input = ""; if(examCfg.type==="blank"){ const w = V(q.n).split(/\s+/); q.hide = shuffle(range(0,w.length-1)).slice(0, Math.max(1, Math.round(w.length/2))).sort((a,b)=>a-b); q.vals = {}; } });
+  exam = {type:examCfg.type, qs, label:pool[0]+"–"+pool[pool.length-1]+"절", startedAt:Date.now()}; examResult = null; render(); }
+function submitExam(){ const e = exam; let sum = 0;
+  e.qs.forEach(q=>{ if(e.type==="blank"){ const w = V(q.n).split(/\s+/); q.acc = q.hide.filter(x=>norm(q.vals[x]||"")===norm(w[x])).length/q.hide.length; }
+    else { const target = q.whole ? q.verses.map(V).join(" ") : V(q.n); q.target = target; q.acc = compare(target, q.input).acc; }
+    sum += q.acc; if(!q.whole) grade(q.n, q.acc>=PASS); });
+  const score = Math.round(sum/e.qs.length*100);
+  if(e.type==="whole"){ const t = today(), l = S.log[t]||{n:0,ok:0}; l.n++; if(score>=EXAM_PASS) l.ok++; S.log[t] = l; }
+  S.exams.unshift({date:today(), range:e.label, type:e.type, n:e.qs.length, score, min:Math.max(1,Math.round((Date.now()-e.startedAt)/60000))}); S.exams = S.exams.slice(0,80); save();
+  examResult = {exam:e, score}; exam = null; render(); window.scrollTo(0,0); }
+function viewExam(){
+  if(examResult){ const r = examResult, c = el("section",{class:"card"}, el("h2",{},"채점 결과 · "+r.exam.label+" · "+typeName(r.exam.type)));
+    c.append(el("div",{class:"row"}, el("span",{class:"score"}, r.score+"점"), el("span",{class:"pill "+(r.score>=EXAM_PASS?"ok":"bad")}, r.score>=EXAM_PASS ? "합격 (기준 "+EXAM_PASS+"점)" : "기준 "+EXAM_PASS+"점 미달")));
+    r.exam.qs.forEach((q,x)=>{ const d = el("div",{class:"q"}); const pct = Math.round(q.acc*100);
+      d.append(el("div",{class:"row"}, el("span",{class:"ref"}, q.whole ? "범위 전체" : "문제 "+(x+1)+" · 로마서 8:"+q.n), el("span",{class:"pill "+(q.acc>=PASS?"ok":q.acc>=.7?"warn":"bad")}, pct+"%")));
+      if(r.exam.type==="blank"){ const w = V(q.n).split(/\s+/), line = el("p",{class:"blankline"});
+        w.forEach((t,i)=>{ if(q.hide.indexOf(i)<0){ line.append(t+" "); return; } const good = norm(q.vals[i]||"")===norm(t);
+          line.append(el("input",{type:"text",readonly:true,size:Math.max(2,t.length*2),value:q.vals[i]||"",class:good?"good":"miss","aria-label":"내 답"})); if(!good) line.append(el("span",{class:"ans"}, t)); line.append(" "); });
+        d.append(line); } else d.append(resultBlock(q.target, q.input).node);
+      c.append(d); });
+    c.append(el("div",{class:"row"}, btn("다시 보기", ()=>{ examResult = null; render(); }, "primary"), btn("기록 보기", ()=>{ examResult = null; go("#record"); })));
+    return [c]; }
+  if(exam){ const e = exam, c = el("section",{class:"card"}, el("div",{class:"row",style:"justify-content:space-between"}, el("h2",{},"모의고시 · "+e.label+" · "+typeName(e.type)), btn("시험 취소", ()=>{ exam = null; render(); }, "ghost")),
+      el("p",{class:"small muted"},"본문을 보지 않고 답한 뒤 맨 아래에서 제출하세요. 띄어쓰기와 문장부호는 채점하지 않습니다."));
+    e.qs.forEach((q,x)=>{ const d = el("div",{class:"q"});
+      if(q.whole){ d.append(el("span",{class:"ref"}, "로마서 8:"+q.verses[0]+"–"+q.verses[q.verses.length-1]+" 전체를 순서대로 쓰세요"));
+        const ta = el("textarea",{id:"ex-"+x,rows:Math.min(24,Math.max(6,q.verses.length*2)),oninput:ev=>{ q.input = ev.target.value; }}); ta.value = q.input; const msg = el("span",{class:"small muted"}); d.append(ta, el("div",{class:"row"}, micBtn(ta,msg), msg)); }
+      else if(e.type==="blank"){ d.append(el("span",{class:"ref"},"문제 "+(x+1)+" · 로마서 8:"+q.n)); const w = V(q.n).split(/\s+/), line = el("p",{class:"blankline"});
+        w.forEach((t,i)=>{ if(q.hide.indexOf(i)<0){ line.append(t+" "); return; }
+          line.append(el("input",{type:"text",id:"ex-"+x+"-"+i,"aria-label":"문제 "+(x+1)+" 빈칸",size:Math.max(2,t.length*2),autocomplete:"off",value:q.vals[i]||"",oninput:ev=>{ q.vals[i] = ev.target.value; }}), " "); });
+        d.append(line); }
+      else { d.append(el("span",{class:"ref"},"문제 "+(x+1)+(e.type==="chain" ? " · 다음 절을 쓰세요" : " · 로마서 8:"+q.n)));
+        if(e.type==="chain") d.append(el("p",{class:"verse",style:"font-size:16px"}, q.n>1 ? V(q.n-1) : "(8장의 첫 절을 쓰세요)"));
+        const ta = el("textarea",{id:"ex-"+x,rows:3,oninput:ev=>{ q.input = ev.target.value; }}); ta.value = q.input; d.append(ta); }
+      c.append(d); });
+    c.append(el("div",{class:"row"}, btn("제출하고 채점", submitExam, "primary")));
+    return [c]; }
+  const c = el("section",{class:"card"}, el("h2",{},"모의고시 설정")), rr = ()=>render();
+  c.append(scopeControls(examCfg, {id:"e",scopes:[["learned","익힌 구절까지"],["sec","단락별"],["custom","절 범위 직접 지정"],["all","8장 전체"]]}, rr));
+  c.append(el("h3",{},"문제 유형"), seg(EXAM_TYPES, examCfg.type, v=>{ examCfg.type = v; rr(); }));
+  if(examCfg.type!=="whole") c.append(el("h3",{},"문항 수"), seg([[5,"5문항"],[10,"10문항"],["all","범위 전체"]], examCfg.count, v=>{ examCfg.count = v; rr(); }));
+  const pool = versesOf(examCfg.scope, examCfg);
+  c.append(el("p",{class:"small muted"}, "문항은 범위 안에서 무작위로 뽑고, 문항별 정확도의 평균을 100점 만점으로 환산합니다. "+EXAM_PASS+"점 이상이 합격입니다. 결과는 구절별 복습 주기에도 반영됩니다."),
+    el("div",{class:"row"}, btn(pool.length ? "시험 시작 ("+pool[0]+"–"+pool[pool.length-1]+"절)" : "아직 익힌 구절이 없습니다. 범위를 바꾸세요", startExam, "primary", {disabled:!pool.length})));
+  return [c, examHistory(5)]; }
+function examHistory(limit){ const c = el("section",{class:"card"}, el("h2",{},"모의고시 기록"));
+  if(!S.exams.length){ c.append(el("p",{class:"muted"},"아직 본 시험이 없습니다. 토요일 주간 점검부터 기록이 쌓입니다.")); return c; }
+  const tb = el("table",{}, el("tr",{}, el("th",{},"날짜"), el("th",{},"범위"), el("th",{},"유형"), el("th",{},"문항"), el("th",{},"점수")));
+  S.exams.slice(0,limit).forEach(x=>tb.append(el("tr",{}, el("td",{}, short(x.date)), el("td",{}, x.range), el("td",{}, typeName(x.type)), el("td",{}, x.n), el("td",{}, el("span",{class:"pill "+(x.score>=EXAM_PASS?"ok":"bad")}, x.score+"점")))));
+  c.append(el("div",{class:"scroll"}, tb)); return c; }
+
+/* ---------- 화면: 기록 ---------- */
+function parseVerses(raw){ const re = /(?:^|[^\d])(?:8\s*[:장]\s*)?(\d{1,2})(?:절)?(?![\d:])/g, marks = []; let m, expect = 1;
+  while((m = re.exec(raw))){ if(+m[1]===expect){ const numStart = m.index + m[0].lastIndexOf(m[1]); marks.push({s:m.index + (/^\d|^8/.test(m[0]) ? 0 : 1), e:re.lastIndex, numStart}); expect++; if(expect>N) break; } }
+  if(marks.length!==N) return {error:"1절부터 "+N+"절까지 절 번호를 순서대로 찾지 못했습니다. "+marks.length+"절까지만 인식했습니다. 각 절 앞에 절 번호가 붙은 본문인지 확인하세요."};
+  const out = marks.map((k,x)=>raw.slice(k.e, x+1<N ? marks[x+1].s : raw.length).replace(/\s+/g," ").replace(/\s*(롬|로마서)\s*$/,"").trim());
+  if(out.some(v=>v.length<5)) return {error:"내용이 너무 짧은 절이 있습니다. 붙여 넣은 본문을 확인하세요."};
+  return {verses:out}; }
+let wipeArmed = false;
+function viewRecord(){ const out = [], t = today(), plan = buildPlan(), byDate = {}; plan.forEach(p=>byDate[p.date] = p);
+  const c = el("section",{class:"card"}, el("h2",{}, "암송 달력 · "+short(S.start)+" – "+short(S.end))), g = el("div",{class:"cal"});
+  ["월","화","수","목","금","토","일"].forEach(d=>g.append(el("div",{class:"dow"}, d)));
+  let d = S.start; while(parse(d).getDay()!==1) d = addDays(d,-1); let last = S.end; while(parse(last).getDay()!==0) last = addDays(last,1);
+  for(; d<=last; d = addDays(d,1)){ const p = byDate[d], act = S.log[d] && S.log[d].n>0;
+    const cls = "day"+(!p?" out":"")+(act?" done":"")+(p && !act && d<t && p.type!=="rest"?" missed":"")+(d===t?" today":"");
+    g.append(el("div",{class:cls}, el("b",{}, parse(d).getDate()===1||d===S.start ? (parse(d).getMonth()+1)+"/"+parse(d).getDate() : parse(d).getDate()), p ? planLabel(p) : "")); }
+  c.append(g, el("div",{class:"legend"}, el("span",{}, el("i",{style:"background:var(--ok-soft);border-color:var(--ok)"}),"점검한 날"), el("span",{}, el("i",{style:"background:var(--warn-soft);border-color:var(--warn)"}),"건너뛴 날"), el("span",{},"칸 아래 글자: 그날 계획")),
+    el("p",{class:"small muted"},"평일에 새 구절 하나, 토요일에 누적 점검, 주일은 낭독만 합니다. 이 속도로 "+short((plan.filter(p=>p.type==="new").pop()||{date:S.end}).date)+"에 39절을 마치고 남은 기간은 통째 쓰기로 다집니다."));
+  out.push(c, examHistory(20));
+  const tv = el("section",{class:"card"}, el("h2",{},"본문 번역본"), el("p",{}, "현재 본문: "+S.translation+(S.verses?" (직접 넣은 본문)":" (기본 탑재)")));
+  tv.append(el("p",{class:"small muted"},"교회에서 쓰는 번역본으로 외우려면 성경 앱이나 성경 사이트에서 로마서 8장 1–39절을 절 번호째 복사해 아래에 붙여 넣으세요. 진행 기록은 그대로 유지됩니다."));
+  const name = el("input",{type:"text",id:"tname",value:S.verses?S.translation:"개역개정",style:"max-width:200px"}), box = el("textarea",{id:"tpaste",rows:5,placeholder:"1 그러므로 이제 … 2 이는 … (39절까지)",style:"font-size:15px"}), msg = el("p",{class:"small",role:"status"});
+  tv.append(el("label",{class:"f"},"번역본 이름", name), box, el("div",{class:"row"},
+    btn("이 본문으로 바꾸기", ()=>{ const r = parseVerses(box.value); if(r.error){ msg.textContent = r.error; return; } S.verses = r.verses; S.translation = name.value.trim()||"직접 넣은 본문"; save(); render(); }, "primary"),
+    S.verses ? btn("기본 본문(개역한글)으로 되돌리기", ()=>{ S.verses = null; S.translation = DEFAULT_TRANSLATION; save(); render(); }) : null), msg);
+  out.push(tv);
+  const bk = el("section",{class:"card"}, el("h2",{},"백업과 초기화")), bbox = el("textarea",{id:"backup",rows:3,style:"font-family:var(--ui);font-size:13px",placeholder:"복원할 백업 내용을 여기에 붙여 넣으세요"}), bmsg = el("p",{class:"small",role:"status"});
+  bk.append(el("p",{class:"small muted"},"기록은 로그인한 계정에 저장되어 다른 기기에서도 이어집니다. 따로 보관하려면 복사해 메모장 등에 붙여 두세요."), bbox, el("div",{class:"row"},
+    btn("진행 기록 복사", ()=>{ const j = JSON.stringify(S); navigator.clipboard.writeText(j).then(()=>{ bmsg.textContent = "복사했습니다."; }).catch(()=>{ bbox.value = j; bbox.select(); bmsg.textContent = "자동 복사가 막혀 있어 위 칸에 넣었습니다. 직접 복사하세요."; }); }),
+    btn("붙여 넣은 내용으로 복원", ()=>{ try{ const o = JSON.parse(bbox.value); if(!o || o.v!==1 || typeof o.cards!=="object") throw 0; S = migrate(o); save(); render(); }catch(e){ bmsg.textContent = "백업 형식이 아닙니다. 복사한 내용 전체를 붙여 넣었는지 확인하세요."; } }),
+    btn(wipeArmed ? "정말 지웁니다. 한 번 더 누르세요" : "모든 기록 지우기", ()=>{ if(!wipeArmed){ wipeArmed = true; render(); return; } wipeArmed = false; const keep = {verses:S.verses, translation:S.translation}; S = Object.assign(blank(), keep); save(); render(); }, wipeArmed?"bad":"")), bmsg);
+  out.push(bk); return out; }
+
+/* ---------- 라우팅 ---------- */
+const ROUTES = {today:viewToday, practice:viewPractice, exam:viewExam, record:viewRecord};
+function render(){ const name = ROUTES[location.hash.slice(1)] ? location.hash.slice(1) : "today";
+  document.querySelectorAll("#tabs a").forEach(a=>{ if(a.getAttribute("href")==="#"+name) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  if(name!=="record") wipeArmed = false;
+  const v = document.getElementById("view"); v.replaceChildren(...ROUTES[name]().filter(Boolean)); }
+window.addEventListener("hashchange", render);
+render(); initCloud(); initVoice();
+</script>
+</body>
+</html>
